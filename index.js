@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const baseAddress = '/api'
+const api = '/api'
 
 let persons = [
     {
@@ -25,8 +25,18 @@ let persons = [
     }
 ]
 
-app.get(`${baseAddress}/persons`, (req, res) => {
+app.get(`${api}/persons`, (req, res) => {
     res.json(persons)
+})
+
+app.get ('/info', (req, res) => {
+    const date = new Date()
+    res.send(
+        `
+        <p>Puhelinluettelossa ${persons.length} henkilön tiedot</p>
+        <p>${date}</p>
+        `
+    )
 })
 
 const PORT = 3001
