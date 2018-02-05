@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const api = '/api'
+const apiPersons = '/api/persons'
 
 let persons = [
     {
@@ -25,7 +25,7 @@ let persons = [
     }
 ]
 
-app.get(`${api}/persons`, (req, res) => {
+app.get(`${apiPersons}`, (req, res) => {
     res.json(persons)
 })
 
@@ -37,6 +37,17 @@ app.get ('/info', (req, res) => {
         <p>${date}</p>
         `
     )
+})
+
+app.get(`${apiPersons}/:id`, (req, res) => {
+    const id = Number(req.params.id)
+    const person = persons.find(person => person.id === id)
+
+    if (person) {
+        res.json(person)
+    } else {
+        res.status(404).end()
+    }
 })
 
 const PORT = 3001
