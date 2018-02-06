@@ -22,7 +22,8 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "heroku-cli": "^6.15.22",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "static": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.14.12"

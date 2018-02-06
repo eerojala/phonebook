@@ -8,6 +8,8 @@ const apiPersons = '/api/persons'
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
 app.use(cors())
+app.use()
+app.use(express.static('build'))
 
 let persons = [
     {
