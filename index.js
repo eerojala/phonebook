@@ -2,10 +2,12 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const cors = require('cors')
 const apiPersons = '/api/persons'
 
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
+app.use(cors())
 
 let persons = [
     {
@@ -68,8 +70,8 @@ app.delete(`${apiPersons}/:id`, (req, res) => {
 })
 
 app.post(`${apiPersons}`, (req, res) => {
-    console.log('posted')
     const body = req.body
+    console.log(body)
     
     if (!body.name || !body.number ) {
         return res.status(400).json({error: 'Missing vital parameters'})
