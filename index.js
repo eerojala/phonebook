@@ -3,42 +3,39 @@ const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
+
 const apiPersons = '/api/persons'
+
 
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
 app.use(cors())
 app.use(express.static('build'))
 
-let persons = [
-    {
-        name: 'Arto Hellas',
-        number: '040-12356',
-        id: 1
-    },
-    {
-        name: 'Martti Tienari',
-        number: '040-123456',
-        id: 2
-    },
-    {
-        name: 'Arto Järvinen',
-        number: '040-123456',
-        id: 3
-    },
-    {
-        name: 'Lea Kutvonen',
-        number: '040-123456',
-        id: 4
-    }
-]
+const Person = mongoose.model('Person', {
+    name: String,
+    number: String
+})
 
 const generateId = () => {
     return Math.floor((Math.random() * 10000) + 1)
 }
 
+const formatPerson = (person) => {
+    return {
+        name: person.name,
+        number: person.number,
+        id: person.id
+    }
+}
+
 app.get(`${apiPersons}`, (req, res) => {
-    res.json(persons)
+    Person
+        .find({}, {__v: 0})
+        .then(persons => {
+            res.json(persons.map(formatPerson))
+        })
 })
 
 app.get ('/info', (req, res) => {
@@ -52,14 +49,11 @@ app.get ('/info', (req, res) => {
 })
 
 app.get(`${apiPersons}/:id`, (req, res) => {
-    const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id)
-
-    if (person) {
-        res.json(person)
-    } else {
-        res.status(404).end()
-    }
+    Person
+        .findById(req.params.id)
+        .then(person => {
+            res.json(formatPerson(person))
+        })
 })
 
 app.delete(`${apiPersons}/:id`, (req, res) => {
@@ -81,15 +75,16 @@ app.post(`${apiPersons}`, (req, res) => {
     } 
     
 
-    const person = {
+    const person = new Person({
         name: body.name,
-        number: body.number,
-        id: generateId()
-    }
+        number: body.number
+    })
 
-    persons = persons.concat(person)
-
-    res.json(person)
+    person
+        .save()
+        .then(savedPerson => {
+            res.json(formatPerson(savedPerson))
+        })
 })
 
 const PORT = process.env.PORT || 3001
