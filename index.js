@@ -98,6 +98,25 @@ app.post(`${apiPersons}`, (req, res) => {
         })
 })
 
+app.put(`${apiPersons}/:id`, (req, res) => {
+    const body = req.body
+
+    const person = {
+        name: body.name,
+        number: body.number
+    }
+
+    Person
+        .findByIdAndUpdate(req.params.id, person, {new : true})
+        .then(updatedPerson => {
+            res.json(formatPerson(updatedPerson))
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(400).send({ error: 'malformatted id '})
+        })
+})
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
