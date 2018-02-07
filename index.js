@@ -13,11 +13,6 @@ app.use(morgan('tiny'))
 app.use(cors())
 app.use(express.static('build'))
 
-const Person = mongoose.model('Person', {
-    name: String,
-    number: String
-})
-
 const generateId = () => {
     return Math.floor((Math.random() * 10000) + 1)
 }
@@ -70,9 +65,9 @@ app.post(`${apiPersons}`, (req, res) => {
     
     if (!body.name || !body.number ) {
         return res.status(400).json({error: 'Missing vital parameters'})
-    } else if (persons.find(person => person.name === body.name)) {
-        return res.status(400).json({error: 'Name must be unique'})
-    } 
+    } // else if (persons.find(person => person.name === body.name)) {
+    //    return res.status(400).json({error: 'Name must be unique'})
+    // } 
     
 
     const person = new Person({
