@@ -38,13 +38,20 @@ app.get(`${apiPersons}`, (req, res) => {
 })
 
 app.get ('/info', (req, res) => {
-    const date = new Date()
-    res.send(
-        `
-        <p>Puhelinluettelossa ${Person.length} henkilön tiedot</p>
-        <p>${date}</p>
-        `
-    )
+    Person
+        .count({}, function (error, c) {
+            const date = new Date()
+            res.send(
+                `
+                <p>Puhelinluettelossa ${c} henkilön tiedot</p>
+                <p>${date}</p>
+                `
+            )
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).end()
+        })
 })
 
 app.get(`${apiPersons}/:id`, (req, res) => {
