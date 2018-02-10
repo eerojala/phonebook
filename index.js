@@ -100,8 +100,9 @@ app.post(`${apiPersons}`, (req, res) => {
 
     person
         .save()
-        .then(savedPerson => {
-            res.json(formatPerson(savedPerson))
+        .then(formatPerson)
+        .then(savedAndFormattedPerson => {
+            res.json(savedAndFormattedPerson)
         })
 })
 
