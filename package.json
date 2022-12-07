@@ -21,7 +21,7 @@
   "dependencies": {
     "cors": "^2.8.4",
     "dotenv": "^5.0.0",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "heroku-cli": "^6.15.22",
     "mongoose": "^5.10.18",
     "morgan": "^1.10.0",
